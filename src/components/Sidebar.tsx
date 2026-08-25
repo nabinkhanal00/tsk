@@ -10,6 +10,7 @@ export function Sidebar({ open, onClose }: { open:boolean, onClose:()=>void }){
   const [favs,setFavs]=useState<string[]>([])
   const [now,setNow]=useState(()=> new Date())
   const [rolling,setRolling]=useState(false)
+  const [hovered,setHovered]=useState<string|null>(null)
   const [expanded,setExpanded]=useState<string[]>(()=>{ try{ return JSON.parse(localStorage.getItem(OPEN_KEY)||"[]") }catch{ return [] }})
   const navigate=useNavigate()
   const location=useLocation()
@@ -54,8 +55,13 @@ export function Sidebar({ open, onClose }: { open:boolean, onClose:()=>void }){
           {categories.map((cat,i)=>{
             const list=tools.filter(t=>t.category===cat)
             if(!list.length) return null
-            const isOpen = expanded.includes(cat) || cat===autoCat
-            return <div key={cat}>
+            // open while hovered, when manually expanded, or when it owns the active tool
+            const isOpen = hovered===cat || expanded.includes(cat) || cat===autoCat
+            return <div
+              key={cat}
+              onMouseEnter={()=>setHovered(cat)}
+              onMouseLeave={()=>setHovered(h=>h===cat? null : h)}
+            >
               <button
                 onClick={()=>toggle(cat)}
                 aria-expanded={isOpen}

@@ -14,12 +14,12 @@ describe("Home (knife landing)",()=>{
     render(<MemoryRouter><Home /></MemoryRouter>)
     await waitFor(()=>{
       const blades = screen.getAllByRole("link").filter(a=>a.getAttribute("aria-label")?.startsWith("Open "))
-      expect(blades.length).toBe(8)
+      expect(blades.length).toBe(15)
     })
     const hrefs = screen.getAllByRole("link").map(a=>a.getAttribute("href"))
     expect(hrefs).toContain("/json/formatter")
     expect(hrefs).toContain("/regex/tester")
-    expect(hrefs).toContain("/crypto/hash")
+    expect(hrefs).toContain("/crypto/jwt")
   })
   it("shows the single privacy line",()=>{
     render(<MemoryRouter><Home /></MemoryRouter>)

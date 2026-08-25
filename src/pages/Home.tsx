@@ -2,17 +2,20 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { BladeMark } from "../components/Header"
 import { useSEO } from "../hooks/useSEO"
+import { tools, categories } from "../lib/registry"
 
-const BLADES = [
-  { label: "JSON",   path: "/json/formatter",    len: 418 },
-  { label: "REGEX",  path: "/regex/tester",      len: 366 },
-  { label: "JQ",     path: "/jq/playground",     len: 394 },
-  { label: "DATA",   path: "/data/csv",          len: 354 },
-  { label: "CRYPTO", path: "/crypto/hash",       len: 382 },
-  { label: "TIME",   path: "/date/timestamp",    len: 360 },
-  { label: "TEXT",   path: "/text/tools",        len: 402 },
-  { label: "ENCODE", path: "/encoding/base64",   len: 350 },
-]
+const SHORT: Record<string,string> = {
+  "Date & Time":"TIME", "Developer":"DEV", "Generators":"GEN",
+  "Network":"NET", "Reference":"REF",
+}
+
+// one blade per tool group — generated from the registry
+const BLADES = categories.map((cat,i)=>({
+  label: SHORT[cat] ?? cat.toUpperCase(),
+  path: (tools.find(t=>t.category===cat) ?? tools[0]).path,
+  // varied lengths like a real knife's tool set
+  len: 330 + [88,28,62,10,78,42,55,0,70,18,60,32,82,22,48][i],
+}))
 
 const SPREAD = 56 // total half-angle of the fan
 // the pivot lives at the bottom of the body — blade tangs reach all the way down to it
