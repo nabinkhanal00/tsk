@@ -82,15 +82,17 @@ export function Home(){
               to={b.path}
               tabIndex={open? 0 : -1}
               aria-label={`Open ${b.label} tools`}
-              className="group absolute left-1/2 bottom-[118px] h-9 origin-bottom hover:z-50"
+              className="group absolute left-1/2 bottom-[134px] h-9 hover:z-50"
               style={{
-                transform:`rotate(${angle}deg) translateY(-8px)`,
+                // open: fan out from the pivot · closed: fold flat and retract into the body
+                transform: open ? `rotate(${angle}deg)` : "rotate(0deg) translateY(34px)",
+                opacity: open ? 1 : 0,
                 width: open? b.len : 300,
                 marginLeft: open? -b.len/2 : -150,
                 transformOrigin:"50% 100%",
                 transition: settled
-                  ? "transform 250ms cubic-bezier(0.34,1.45,0.64,1), width 250ms"
-                  : `transform 700ms cubic-bezier(0.34,1.45,0.64,1) ${i*80}ms, width 700ms ${i*80}ms`,
+                  ? "transform 450ms cubic-bezier(0.5,0,0.3,1), opacity 320ms ease, width 250ms"
+                  : `transform 750ms cubic-bezier(0.34,1.4,0.64,1) ${i*80}ms, width 750ms ${i*80}ms, opacity 450ms ${i*80}ms`,
                 zIndex: i+1,
               }}
             >
@@ -103,7 +105,7 @@ export function Home(){
 
           {/* ripple on pivot click */}
           {ripple>0 && [0,1].map(k=>(
-            <span key={`${ripple}-${k}`} className="absolute left-1/2 bottom-[124px] -translate-x-1/2 translate-y-1/2 w-3.5 h-3.5 rounded-full border-2 border-primary ripple-ring" style={{animationDelay:`${k*150}ms`}}/>
+            <span key={`${ripple}-${k}`} className="absolute left-1/2 bottom-[134px] -translate-x-1/2 translate-y-1/2 w-3.5 h-3.5 rounded-full border-2 border-primary ripple-ring" style={{animationDelay:`${k*150}ms`}}/>
           ))}
 
           {/* the body — an alox shell the blades fold into */}
@@ -118,12 +120,12 @@ export function Home(){
             </div>
           </div>
 
-          {/* red pivot — click to refan */}
+          {/* red pivot — the end of the knife; click to fold + refan */}
           <button
             onClick={refan}
             aria-label="Fold and fan the blades"
             title="Click me"
-            className="absolute left-1/2 bottom-[118px] -translate-x-1/2 translate-y-1/2 z-50 cursor-pointer active:scale-90 transition-transform"
+            className="absolute left-1/2 bottom-[134px] -translate-x-1/2 translate-y-1/2 z-50 cursor-pointer active:scale-90 transition-transform"
           >
             <span className="block w-3.5 h-3.5 rounded-full bg-primary ring-4 ring-background shadow"/>
           </button>
