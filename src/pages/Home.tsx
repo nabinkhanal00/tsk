@@ -94,7 +94,7 @@ export function Home(){
                 zIndex: i+1,
               }}
             >
-              <span className={`w-full h-full rounded-md border flex items-center justify-end gap-2 pr-3 shadow-sm transition-all duration-200 origin-left ${i%2? "bg-card":"bg-secondary" } group-hover:bg-primary group-hover:border-primary group-hover:text-primary-foreground group-hover:shadow-lg group-hover:scale-x-105`}>
+              <span className={`blade-tip w-full h-full rounded-md border flex items-center justify-end gap-2 pr-9 shadow-sm transition-all duration-200 origin-left ${i%2? "bg-card":"bg-secondary" } group-hover:bg-primary group-hover:border-primary group-hover:text-primary-foreground group-hover:shadow-lg group-hover:scale-x-105`}>
                 <span className="mono text-[10px] text-primary group-hover:text-primary-foreground">{String(i+1).padStart(2,"0")}</span>
                 <span className="mono text-xs font-medium tracking-[0.14em]">{b.label}</span>
               </span>

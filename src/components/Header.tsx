@@ -5,13 +5,13 @@ import { searchTools, tools } from "../lib/registry"
 import { useNavigate } from "react-router-dom"
 import { getRecent } from "../hooks/useLocal"
 
-/** Fanned tool blades around a red pivot — the mark. */
+/** Fanned tool blades with pointed tips around a red pivot — the mark. */
 export function BladeMark({ className = "w-4 h-4" }){
   return <svg viewBox="0 0 32 32" className={className} fill="none" aria-hidden>
-    <g stroke="currentColor" strokeWidth="3.4" strokeLinecap="round">
-      <line x1="16" y1="20.5" x2="7.5" y2="9.5" />
-      <line x1="16" y1="20.5" x2="16" y2="4.5" />
-      <line x1="16" y1="20.5" x2="24.5" y2="9.5" />
+    <g fill="currentColor">
+      <path d="M13.6 20.5 L16 5.2 L18.4 20.5 Z" transform="rotate(-42 16 20.5)"/>
+      <path d="M13.2 20.5 L16 3.2 L18.8 20.5 Z"/>
+      <path d="M13.6 20.5 L16 5.2 L18.4 20.5 Z" transform="rotate(42 16 20.5)"/>
     </g>
     <circle cx="16" cy="20.5" r="3.1" className="fill-primary"/>
   </svg>
