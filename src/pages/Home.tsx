@@ -33,11 +33,10 @@ export function Home(){
     return ()=>{ cancelAnimationFrame(raf); clearTimeout(t) }
   },[])
 
-  // red pivot: snap blades shut, then fan them open again
-  const refan=()=>{
-    setOpen(false)
+  // red pivot toggles the knife: fully closed ↔ fully open
+  const toggle=()=>{
     setRipple(r=>r+1)
-    setTimeout(()=>setOpen(true), 480)
+    setOpen(v=>!v)
   }
 
   const n=BLADES.length
@@ -120,11 +119,12 @@ export function Home(){
             </div>
           </div>
 
-          {/* red pivot — the end of the knife; click to fold + refan */}
+          {/* red pivot — the end of the blade; click to toggle open/closed */}
           <button
-            onClick={refan}
-            aria-label="Fold and fan the blades"
-            title="Click me"
+            onClick={toggle}
+            aria-label={open ? "Close the blades" : "Open the blades"}
+            aria-expanded={open}
+            title={open ? "Close" : "Open"}
             className="absolute left-1/2 bottom-[134px] -translate-x-1/2 translate-y-1/2 z-50 cursor-pointer active:scale-90 transition-transform"
           >
             <span className="block w-3.5 h-3.5 rounded-full bg-primary ring-4 ring-background shadow"/>
@@ -132,7 +132,7 @@ export function Home(){
         </div>
 
         <p className="mono text-[11px] text-muted-foreground -mt-2">
-          {open ? "pick a blade" : "…"}
+          {open ? "pick a blade" : "click the pivot to open"}
         </p>
       </div>
     </div>
