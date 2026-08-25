@@ -4,17 +4,19 @@ import { BladeMark } from "../components/Header"
 import { useSEO } from "../hooks/useSEO"
 
 const BLADES = [
-  { label: "JSON",   path: "/json/formatter",    len: 320 },
-  { label: "REGEX",  path: "/regex/tester",      len: 268 },
-  { label: "JQ",     path: "/jq/playground",     len: 296 },
-  { label: "DATA",   path: "/data/csv",          len: 256 },
-  { label: "CRYPTO", path: "/crypto/hash",       len: 284 },
-  { label: "TIME",   path: "/date/timestamp",    len: 262 },
-  { label: "TEXT",   path: "/text/tools",        len: 304 },
-  { label: "ENCODE", path: "/encoding/base64",   len: 252 },
+  { label: "JSON",   path: "/json/formatter",    len: 418 },
+  { label: "REGEX",  path: "/regex/tester",      len: 366 },
+  { label: "JQ",     path: "/jq/playground",     len: 394 },
+  { label: "DATA",   path: "/data/csv",          len: 354 },
+  { label: "CRYPTO", path: "/crypto/hash",       len: 382 },
+  { label: "TIME",   path: "/date/timestamp",    len: 360 },
+  { label: "TEXT",   path: "/text/tools",        len: 402 },
+  { label: "ENCODE", path: "/encoding/base64",   len: 350 },
 ]
 
-const SPREAD = 66 // total half-angle of the fan
+const SPREAD = 56 // total half-angle of the fan
+// the pivot lives at the bottom of the body — blade tangs reach all the way down to it
+const PIVOT_B = 36 // px from the knife container's bottom
 
 export function Home(){
   const [open,setOpen]=useState(false)
@@ -67,29 +69,29 @@ export function Home(){
       </div>
 
       {/* the knife — blades are navigation */}
-      <div className="relative hidden md:flex flex-col items-center select-none">
-        <div className="relative w-[420px] h-[400px]">
+      <div className="relative hidden md:flex flex-col items-center select-none lg:scale-90 xl:scale-100">
+        <div className="relative w-[560px] h-[500px]">
           {/* dashed fan arc — drafting guide */}
-          <svg viewBox="0 0 420 420" className="absolute inset-0 w-full h-full" fill="none" aria-hidden>
-            <path d="M 70 366 A 168 168 0 0 1 350 366" stroke="hsl(var(--border))" strokeWidth="1" strokeDasharray="3 5"/>
+          <svg viewBox="0 0 560 500" className="absolute inset-0 w-full h-full" fill="none" aria-hidden>
+            <path d="M 15 285 A 320 320 0 0 1 545 285" stroke="hsl(var(--border))" strokeWidth="1" strokeDasharray="3 5"/>
           </svg>
 
           {BLADES.map((b,i)=>{
-            const angle = open ? -SPREAD + i*step : 0
+            const angle = open ? -90 - SPREAD + i*step : -90
             return <Link
               key={b.label}
               to={b.path}
               tabIndex={open? 0 : -1}
               aria-label={`Open ${b.label} tools`}
-              className="group absolute left-1/2 bottom-[126px] h-[44px] hover:z-50"
+              className="group absolute left-1/2 bottom-[18px] h-9 hover:z-50"
               style={{
-                // open: fan out from the pivot · closed: fold flat and retract into the body
-                // the blade's base extends 8px past the pivot (behind dot + body) — no gap at any angle
-                transform: open ? `rotate(${angle}deg)` : "rotate(0deg) translateY(30px)",
+                // the blade's flat BASE edge is anchored at the pivot (left-center);
+                // the pointed tip extends outward. closed: stack vertical, slide
+                // into the body, fade.
+                transform: open ? `rotate(${angle}deg)` : "rotate(-90deg) translateX(-30px)",
                 opacity: open ? 1 : 0,
                 width: open? b.len : 300,
-                marginLeft: open? -b.len/2 : -150,
-                transformOrigin:"50% 36px", // exactly the pivot dot's center
+                transformOrigin:"0 50%",
                 transition: settled
                   ? "transform 450ms cubic-bezier(0.5,0,0.3,1), opacity 320ms ease, width 250ms"
                   : `transform 750ms cubic-bezier(0.34,1.4,0.64,1) ${i*80}ms, width 750ms ${i*80}ms, opacity 450ms ${i*80}ms`,
@@ -105,7 +107,7 @@ export function Home(){
 
           {/* ripple on pivot click */}
           {ripple>0 && [0,1].map(k=>(
-            <span key={`${ripple}-${k}`} className="absolute left-1/2 bottom-[134px] -translate-x-1/2 translate-y-1/2 w-3.5 h-3.5 rounded-full border-2 border-primary ripple-ring" style={{animationDelay:`${k*150}ms`}}/>
+            <span key={`${ripple}-${k}`} className="absolute left-1/2 bottom-[36px] -translate-x-1/2 translate-y-1/2 w-3.5 h-3.5 rounded-full border-2 border-primary ripple-ring" style={{animationDelay:`${k*150}ms`}}/>
           ))}
 
           {/* the body — an alox shell the blades fold into */}
@@ -120,19 +122,19 @@ export function Home(){
             </div>
           </div>
 
-          {/* red pivot — the end of the blade; click to toggle open/closed */}
+          {/* red pivot — at the base of the blades, bottom of the body; click to toggle */}
           <button
             onClick={toggle}
             aria-label={open ? "Close the blades" : "Open the blades"}
             aria-expanded={open}
             title={open ? "Close" : "Open"}
-            className="absolute left-1/2 bottom-[134px] -translate-x-1/2 translate-y-1/2 z-50 cursor-pointer active:scale-90 transition-transform"
+            className="absolute left-1/2 bottom-[36px] -translate-x-1/2 translate-y-1/2 z-50 cursor-pointer active:scale-90 transition-transform"
           >
             <span className="block w-3.5 h-3.5 rounded-full bg-primary ring-4 ring-background shadow"/>
           </button>
         </div>
 
-        <p className="mono text-[11px] text-muted-foreground -mt-2">
+        <p className="mono text-[11px] text-muted-foreground mt-3">
           {open ? "pick a blade" : "click the pivot to open"}
         </p>
       </div>
