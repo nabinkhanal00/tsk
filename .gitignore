@@ -8,3 +8,4 @@ vite.config.d.ts
 skills-lock.json
 .DS_Store
 *.log
+.prerender/

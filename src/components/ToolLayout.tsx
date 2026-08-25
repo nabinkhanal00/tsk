@@ -2,11 +2,17 @@ import { PrivacyBadge } from "./PrivacyBadge"
 import { Copy, Download, Trash2, ChevronRight, Check } from "lucide-react"
 import { copyToClipboard } from "../lib/utils"
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { getToolById } from "../lib/registry"
+import { useSEO } from "../hooks/useSEO"
 
 export function ToolLayout({ title, description, clientSide=true, children, related, category }: { title:string, description:string, clientSide?:boolean, children:React.ReactNode, related?:string[], category?:string }){
-  if(typeof document!=="undefined") document.title=`The Swiss Knife — ${title}`
+  const location = useLocation()
+  useSEO({
+    title: `The Swiss Knife — ${title}`,
+    description: `${description}. Free, runs entirely in your browser — no uploads, no signup.`,
+    path: location.pathname,
+  })
   return <div className="max-w-5xl mx-auto px-4 py-6 md:py-8">
     <div className="mb-6">
       <div className="flex items-center gap-1.5 text-[11px] mono text-muted-foreground">
@@ -28,6 +34,19 @@ export function ToolLayout({ title, description, clientSide=true, children, rela
     </div>
 
     <div className="space-y-5">{children}</div>
+
+    {/* JSON-LD — WebApplication rich results */}
+    <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify({
+      "@context":"https://schema.org",
+      "@type":"WebApplication",
+      "name":`The Swiss Knife — ${title}`,
+      "description":`${description}. Runs entirely in your browser.`,
+      "url":`https://theswissknife.com${location.pathname}`,
+      "applicationCategory":"DeveloperApplication",
+      "operatingSystem":"Any",
+      "browserRequirements":"Requires JavaScript",
+      "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}
+    })}} />
 
     {related && related.length>0 && <div className="mt-10 pt-6 border-t">
       <h3 className="eyebrow text-muted-foreground">Related</h3>

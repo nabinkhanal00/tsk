@@ -79,12 +79,30 @@ VITE_GITHUB_URL=https://github.com/...
 - Accessibility: keyboard nav (Tab/Arrows/Enter/Esc), ARIA, focus states, contrast 4.5:1
 
 ## Deployment
-Static hosting (Cloudflare Pages / Nginx / CDN):
+
+**Vercel (recommended)** — `vercel.json` is preconfigured (cleanUrls, SPA fallback, immutable asset caching, security headers):
+
+```bash
+npm i -g vercel
+vercel --prod
+```
+
+Then attach the domain `theswissknife.com` in the Vercel dashboard (A/CNAME records) and submit `https://theswissknife.com/sitemap.xml` to Google Search Console.
+
+**Any static host** (Cloudflare Pages / Nginx / CDN):
 ```bash
 npm run build
 # deploy dist/
 ```
-No backend required. Configure SPA fallback to `index.html`.
+SPA fallback to `index.html` for unknown routes (client-side 404).
+
+### SEO architecture
+
+- **Build-time prerendering (SSG)**: `npm run build` renders all 48 routes (home + 47 tools) to static HTML with per-route `<title>`, meta description, canonical, Open Graph and Twitter tags — crawlers and social unfurlers get full content with zero runtime server. Users get the SPA as before.
+- **Single source of truth**: routes/titles/descriptions derive from `src/lib/registry.tsx`; `scripts/prerender.mjs` emits the pages, `sitemap.xml` and `robots.txt`.
+- **JSON-LD**: each tool page embeds `WebApplication` schema (free, browser-based) for rich results.
+- **OG image**: `public/og-image.png` (1200×630).
+- All processing still happens client-side at runtime — SEO affects only the initial HTML shell.
 
 ## CI
 ```yaml

@@ -20,7 +20,7 @@ class ChunkErrorBoundary extends Component<{ children: ReactNode }, { failed: bo
   }
 }
 
-function Shell(){
+export function Shell(){
   const [sidebarOpen,setSidebarOpen]=useState(false)
   const location=useLocation()
   useEffect(()=>{

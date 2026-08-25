@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { BladeMark } from "../components/Header"
+import { useSEO } from "../hooks/useSEO"
 
 const BLADES = [
   { label: "JSON",   path: "/json/formatter",    len: 320 },
@@ -19,6 +20,12 @@ export function Home(){
   const [open,setOpen]=useState(false)
   const [settled,setSettled]=useState(false)
   const [ripple,setRipple]=useState(0)
+
+  useSEO({
+    title: "The Swiss Knife — One toolbox. Every utility you need.",
+    description: "47 fast, private, browser-based developer tools for JSON, regex, jq, JWT, dates, encoding, hashing, images, PDFs and more. No uploads, no signup — everything runs locally.",
+    path: "/",
+  })
 
   useEffect(()=>{
     const raf=requestAnimationFrame(()=>setOpen(true))
