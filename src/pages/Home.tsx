@@ -81,14 +81,15 @@ export function Home(){
               to={b.path}
               tabIndex={open? 0 : -1}
               aria-label={`Open ${b.label} tools`}
-              className="group absolute left-1/2 bottom-[134px] h-9 hover:z-50"
+              className="group absolute left-1/2 bottom-[126px] h-[44px] hover:z-50"
               style={{
                 // open: fan out from the pivot · closed: fold flat and retract into the body
-                transform: open ? `rotate(${angle}deg)` : "rotate(0deg) translateY(34px)",
+                // the blade's base extends 8px past the pivot (behind dot + body) — no gap at any angle
+                transform: open ? `rotate(${angle}deg)` : "rotate(0deg) translateY(30px)",
                 opacity: open ? 1 : 0,
                 width: open? b.len : 300,
                 marginLeft: open? -b.len/2 : -150,
-                transformOrigin:"50% 100%",
+                transformOrigin:"50% 36px", // exactly the pivot dot's center
                 transition: settled
                   ? "transform 450ms cubic-bezier(0.5,0,0.3,1), opacity 320ms ease, width 250ms"
                   : `transform 750ms cubic-bezier(0.34,1.4,0.64,1) ${i*80}ms, width 750ms ${i*80}ms, opacity 450ms ${i*80}ms`,
